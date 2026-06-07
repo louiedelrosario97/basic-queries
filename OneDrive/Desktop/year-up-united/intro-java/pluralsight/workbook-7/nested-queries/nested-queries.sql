@@ -13,12 +13,10 @@ WHERE UnitPrice = (SELECT MAX(UnitPrice) FROM products);
 -- "Federal Shipping"?  HINT:  Find the shipper id of "Federal Shipping" in a subquery
 -- and then use that value to find the orders that used that shipper.
 
-        
-
-
-
-
-
+USE northwind;
+SELECT OrderID, ShipName, ShipAddress
+FROM orders
+WHERE ShipVia = (SELECT ShipperID FROM shippers WHERE CompanyName = 'Federal Shipping');
 
 -- 3. What are the order ids of the orders that ordered "Sasquatch Ale"?  HINT:   Find
 -- the product id of "Sasquatch Ale" in a subquery and then use that value to find
@@ -26,9 +24,19 @@ WHERE UnitPrice = (SELECT MAX(UnitPrice) FROM products);
 -- table has a space in its name, you will need to surround it with back ticks in the
 -- FROM clause.
 
+SELECT OrderID
+FROM `order details`
+WHERE ProductID = (SELECT ProductID FROM products WHERE ProductName = 'Sasquatch Ale');
 
 
 -- 4. What is the name of the employee that sold order 10266?
 
+SELECT EmployeeID, FirstName, LastName
+FROM employees
+WHERE EmployeeID = (SELECT EmployeeID FROM orders WHERE OrderID = 10266);
 
 -- 5. What is the name of the customer that bought order 10266?
+
+SELECT ContactName
+FROM customers
+WHERE CustomerID = (SELECT CustomerID FROM orders WHERE OrderID = 10266);
